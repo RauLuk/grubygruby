@@ -1,0 +1,110 @@
+function [ output_args ] = Untitled( input_args )
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+clear;
+clc;
+Tabela =[1,2,1;
+    1,3,1;
+    1,4,8;
+    1,5,10;
+    2,3,1;
+    2,4,1;
+    3,4,3;
+    4,5,2]
+
+sortowanie=sortrows(Tabela,3); 
+disp 'tabela posortowana pod wzgledem wag'
+disp(sortrows(Tabela,3))
+
+KRAWEDZ1 = 0;               %wierzcholki poczatkowe
+KRAWEDZ2=0;                    %wierzcholki koncowe
+SUMAWAG = 0;
+LICZNIKk=0;
+temp = max(Tabela);         %maksymalna wartość kazdej kolumny
+N = temp(2);        % ilosc wierszy na podstawie zmiennej temp
+M = size(Tabela,1); %ilosc krawedzi na podstawie wierszy w kolumnie
+h=0;
+for n=1:M
+    p(n) = sortowanie(n,1);         %wierzcholek poczatkowy
+    k(n) = sortowanie(n,2);         %wierzcholek koncowy
+    w(n) = sortowanie(n,3);         % wagi
+end
+
+p1=p;
+k1=k;
+timesum=0; 
+for n=5:5:100
+    
+   
+for e=1:1:30
+    disp ( '-------------------------');
+    h=h+1
+  
+    
+     c=1;
+for i=1:1:n-1
+
+for j=i+1:1:n
+    Tabela(c,1)=i;
+    Tabela(c,2)=j;
+    Tabela(c,3)=30+randi(21);
+    c=c+1;
+end
+end
+
+    b=sortrows(Tabela,3);
+
+tic
+%Poczatek petli algorytmu kruskala
+for j=1:M
+    r1 = p1(j);                 %przeszukiwanie tabeli
+    r2 = k1(j);                 %przeszukiwanie tabeli
+    if r1~=r2
+        LICZNIKk=LICZNIKk +1;
+        
+        KRAWEDZ1(LICZNIKk)= p(j);
+        KRAWEDZ2(LICZNIKk)= k(j);
+        SUMAWAG =SUMAWAG + w(j);
+        
+        minimum = min(r1,r2);
+        maksimum = max(r1,r2);
+        
+        for f= 1:M
+            if p1(f)==maksimum
+                p1(f) = minimum;
+            if k1(f) == maksimum
+                k1(f)= minimum;
+                
+         end
+            end
+            
+        end
+end
+    
+    
+   %czas
+  
+if size(KRAWEDZ1,2)<N-1
+     disp('sieć niespójna');
+end    
+        
+if size(KRAWEDZ1,2)>=N-1
+    disp('sieć spójna');
+end
+
+
+%KRAWEDZ1
+%KRAWEDZ2
+%SUMAWAG
+
+
+end
+    
+   timesum=timesum + toc ;    %czas
+   disp('suma:')
+   disp(timesum)
+    toc  
+    
+end
+end
+plot(KRAWEDZ1,KRAWEDZ2)
